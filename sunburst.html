@@ -3,15 +3,667 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Africa Sunburst Chart</title>
-    <link rel="stylesheet" href="style.css">
+    <title>African Continent Economic Overview</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: white;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-link::before {
+            content: "◀ ";
+            margin-right: 5px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: black;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            line-height: 1.2;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .main-content {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            background: white;
+            display: flex;
+            gap: 50px;
+            align-items: flex-start;
+        }
+
+        .chart-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .sunburst-chart {
+            position: relative;
+        }
+
+        .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .center-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.3;
+            max-width: 120px;
+        }
+
+        .legend-container {
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            background: #fafafa;
+        }
+
+        .legend-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .legend-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .legend-item.active {
+            background: rgba(25, 118, 210, 0.1);
+            border-left: 4px solid #1976d2;
+            padding-left: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 15px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .reset-button {
+            width: 100%;
+            padding: 12px 20px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background: #1565c0;
+            transform: translateY(-1px);
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            font-size: 13px;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            max-width: 280px;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tooltip-flag {
+            font-size: 1.8rem;
+            margin-right: 10px;
+        }
+
+        .tooltip-country {
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .tooltip-region {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        .tooltip-data {
+            display: grid;
+            gap: 6px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2px 0;
+        }
+
+        .data-label {
+            color: #666;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .data-value {
+            color: #333;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 40px 0;
+        }
+
+        .arc {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .arc:hover {
+            filter: brightness(1.1);
+            stroke-width: 3px;
+        }
+
+        .region-label {
+            font-size: 11px;
+            font-weight: 600;
+            fill: #333;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .country-label {
+            font-size: 9px;
+            font-weight: 500;
+            fill: #555;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-    <a href="index.html" class="back-link" style="position:absolute;top:0;left:0;">
-        &#8592; Back to Home
-    </a>
-    <div class="sunburst-placeholder">
-        Sunburst chart will appear here.
+    <div class="container">
+        <a href="index.html" class="back-link">Back to homepage</a>
+        
+        <div class="header">
+            <h1>Africa Continent Economic Overview</h1>
+            <p>How leading international institutions like the International Monetary Fund, World Bank, and United Nations assess Africa's economic conditions.</p>
+        </div>
+        
+        <div class="loading" id="loading">Loading economic data...</div>
+        
+        <div class="main-content" id="main-content" style="display: none;">
+            <div class="chart-container">
+                <div class="sunburst-chart" id="sunburst"></div>
+                <div class="center-text">
+                    <div class="center-title">African Continent Economic Overview</div>
+                </div>
+            </div>
+            
+            <div class="legend-container">
+                <div class="legend-title">Regions</div>
+                <div id="legend-items"></div>
+                <button class="reset-button" id="reset-button">Reset Overview</button>
+            </div>
+        </div>
+        
+        <div class="tooltip" id="tooltip"></div>
     </div>
-</body>
-</html>
+
+    <script>
+        // Define colors matching the reference image
+        const regionColorMap = {
+            "West Africa": "#7dd3c7",
+            "East Africa": "#4fb894", 
+            "Southern Africa": "#fbb4ae",
+            "North Africa": "#b3de8c",
+            "Central Africa": "#e74c3c",
+            "African Island Nations": "#4a90e2"
+        };
+
+        // Extended African economic data
+        const allAfricanData = {
+            "West Africa": [
+                { name: "Nigeria", gdp: 432.3, population: 218.5, gdpPerCapita: 1980, growth: 3.2, flag: "🇳🇬", currency: "NGN" },
+                { name: "Ghana", gdp: 77.6, population: 32.8, gdpPerCapita: 2370, growth: 4.1, flag: "🇬🇭", currency: "GHS" },
+                { name: "Côte d'Ivoire", gdp: 70.9, population: 27.5, gdpPerCapita: 2580, growth: 6.2, flag: "🇨🇮", currency: "XOF" },
+                { name: "Senegal", gdp: 27.6, population: 17.2, gdpPerCapita: 1600, growth: 4.8, flag: "🇸🇳", currency: "XOF" },
+                { name: "Mali", gdp: 19.1, population: 21.9, gdpPerCapita: 870, growth: 3.5, flag: "🇲🇱", currency: "XOF" },
+                { name: "Burkina Faso", gdp: 18.7, population: 22.7, gdpPerCapita: 820, growth: 2.9, flag: "🇧🇫", currency: "XOF" },
+                { name: "Guinea", gdp: 16.1, population: 13.5, gdpPerCapita: 1190, growth: 4.7, flag: "🇬🇳", currency: "GNF" },
+                { name: "Benin", gdp: 17.4, population: 12.5, gdpPerCapita: 1390, growth: 6.0, flag: "🇧🇯", currency: "XOF" },
+                { name: "Niger", gdp: 14.9, population: 25.3, gdpPerCapita: 590, growth: 1.2, flag: "🇳🇪", currency: "XOF" },
+                { name: "Togo", gdp: 8.1, population: 8.5, gdpPerCapita: 950, growth: 5.3, flag: "🇹🇬", currency: "XOF" }
+            ],
+            "East Africa": [
+                { name: "Ethiopia", gdp: 111.3, population: 120.8, gdpPerCapita: 920, growth: 6.1, flag: "🇪🇹", currency: "ETB" },
+                { name: "Kenya", gdp: 109.1, population: 54.0, gdpPerCapita: 2020, growth: 5.4, flag: "🇰🇪", currency: "KES" },
+                { name: "Tanzania", gdp: 67.8, population: 61.7, gdpPerCapita: 1100, growth: 4.9, flag: "🇹🇿", currency: "TZS" },
+                { name: "Uganda", gdp: 47.1, population: 47.2, gdpPerCapita: 1000, growth: 3.8, flag: "🇺🇬", currency: "UGX" },
+                { name: "Rwanda", gdp: 11.1, population: 13.3, gdpPerCapita: 830, growth: 8.2, flag: "🇷🇼", currency: "RWF" },
+                { name: "Mozambique", gdp: 16.9, population: 32.4, gdpPerCapita: 520, growth: 2.3, flag: "🇲🇿", currency: "MZN" },
+                { name: "Malawi", gdp: 12.6, population: 20.4, gdpPerCapita: 620, growth: 2.1, flag: "🇲🇼", currency: "MWK" },
+                { name: "Zambia", gdp: 22.1, population: 19.6, gdpPerCapita: 1130, growth: 3.6, flag: "🇿🇲", currency: "ZMW" },
+                { name: "Burundi", gdp: 3.0, population: 12.6, gdpPerCapita: 240, growth: 1.8, flag: "🇧🇮", currency: "BIF" },
+                { name: "Djibouti", gdp: 3.4, population: 1.0, gdpPerCapita: 3400, growth: 7.8, flag: "🇩🇯", currency: "DJF" }
+            ],
+            "Southern Africa": [
+                { name: "South Africa", gdp: 419.0, population: 60.4, gdpPerCapita: 6940, growth: 0.9, flag: "🇿🇦", currency: "ZAR" },
+                { name: "Angola", gdp: 94.6, population: 34.5, gdpPerCapita: 2740, growth: -0.6, flag: "🇦🇴", currency: "AOA" },
+                { name: "Zimbabwe", gdp: 21.4, population: 15.9, gdpPerCapita: 1350, growth: -4.1, flag: "🇿🇼", currency: "USD" },
+                { name: "Botswana", gdp: 18.3, population: 2.4, gdpPerCapita: 7630, growth: 4.5, flag: "🇧🇼", currency: "BWP" },
+                { name: "Namibia", gdp: 12.4, population: 2.5, gdpPerCapita: 4960, growth: -1.1, flag: "🇳🇦", currency: "NAD" },
+                { name: "Lesotho", gdp: 2.5, population: 2.2, gdpPerCapita: 1140, growth: 2.3, flag: "🇱🇸", currency: "LSL" },
+                { name: "Eswatini", gdp: 4.7, population: 1.2, gdpPerCapita: 3920, growth: 2.4, flag: "🇸🇿", currency: "SZL" }
+            ],
+            "North Africa": [
+                { name: "Egypt", gdp: 469.1, population: 106.2, gdpPerCapita: 4420, growth: 3.3, flag: "🇪🇬", currency: "EGP" },
+                { name: "Algeria", gdp: 191.9, population: 45.4, gdpPerCapita: 4230, growth: 0.8, flag: "🇩🇿", currency: "DZD" },
+                { name: "Morocco", gdp: 132.7, population: 37.5, gdpPerCapita: 3540, growth: 1.5, flag: "🇲🇦", currency: "MAD" },
+                { name: "Tunisia", gdp: 46.8, population: 12.0, gdpPerCapita: 3900, growth: -8.2, flag: "🇹🇳", currency: "TND" },
+                { name: "Libya", gdp: 25.4, population: 6.9, gdpPerCapita: 3680, growth: -31.3, flag: "🇱🇾", currency: "LYD" },
+                { name: "Sudan", gdp: 34.3, population: 45.7, gdpPerCapita: 750, growth: -3.6, flag: "🇸🇩", currency: "SDG" }
+            ],
+            "Central Africa": [
+                { name: "Cameroon", gdp: 40.9, population: 27.9, gdpPerCapita: 1470, growth: 0.5, flag: "🇨🇲", currency: "XAF" },
+                { name: "DR Congo", gdp: 55.4, population: 95.2, gdpPerCapita: 580, growth: 1.7, flag: "🇨🇩", currency: "CDF" },
+                { name: "Chad", gdp: 11.3, population: 17.2, gdpPerCapita: 660, growth: -0.9, flag: "🇹🇩", currency: "XAF" },
+                { name: "Central African Republic", gdp: 2.2, population: 5.0, gdpPerCapita: 440, growth: 3.0, flag: "🇨🇫", currency: "XAF" },
+                { name: "Republic of the Congo", gdp: 12.4, population: 5.7, gdpPerCapita: 2180, growth: -0.6, flag: "🇨🇬", currency: "XAF" },
+                { name: "Equatorial Guinea", gdp: 10.2, population: 1.5, gdpPerCapita: 6800, growth: -6.1, flag: "🇬🇶", currency: "XAF" },
+                { name: "Gabon", gdp: 18.3, population: 2.3, gdpPerCapita: 7960, growth: -1.8, flag: "🇬🇦", currency: "XAF" },
+                { name: "São Tomé and Príncipe", gdp: 0.5, population: 0.22, gdpPerCapita: 2270, growth: 3.1, flag: "🇸🇹", currency: "STN" }
+            ],
+            "African Island Nations": [
+                { name: "Mauritius", gdp: 14.2, population: 1.3, gdpPerCapita: 10930, growth: 6.9, flag: "🇲🇺", currency: "MUR" },
+                { name: "Seychelles", gdp: 1.7, population: 0.10, gdpPerCapita: 17000, growth: 4.4, flag: "🇸🇨", currency: "SCR" },
+                { name: "Madagascar", gdp: 15.4, population: 29.2, gdpPerCapita: 530, growth: 4.2, flag: "🇲🇬", currency: "MGA" },
+                { name: "Cape Verde", gdp: 2.1, population: 0.56, gdpPerCapita: 3750, growth: 4.8, flag: "🇨🇻", currency: "CVE" },
+                { name: "Comoros", gdp: 1.3, population: 0.89, gdpPerCapita: 1460, growth: 2.1, flag: "🇰🇲", currency: "KMF" }
+            ]
+        };
+
+        // Global variables
+        let currentFilter = null;
+        let svg, g, tooltip;
+        const width = 500;
+        const height = 500;
+        const radius = Math.min(width, height) / 2;
+
+        // Initialize chart
+        function initChart() {
+            svg = d3.select("#sunburst")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            g = svg.append("g")
+                .attr("transform", `translate(${width / 2},${height / 2})`);
+
+            tooltip = d3.select("#tooltip");
+            
+            createLegend();
+            updateChart();
+        }
+
+        function createLegend() {
+            const legendContainer = d3.select("#legend-items");
+            
+            Object.keys(regionColorMap).forEach(region => {
+                const item = legendContainer.append("div")
+                    .attr("class", "legend-item")
+                    .attr("data-region", region)
+                    .on("click", function() {
+                        filterByRegion(region);
+                        updateLegendState(region);
+                    });
+
+                item.append("div")
+                    .attr("class", "legend-color")
+                    .style("background-color", regionColorMap[region]);
+
+                item.append("div")
+                    .attr("class", "legend-text")
+                    .text(region);
+            });
+
+            // Reset button functionality
+            d3.select("#reset-button").on("click", function() {
+                currentFilter = null;
+                updateChart();
+                updateLegendState(null);
+            });
+        }
+
+        function updateLegendState(activeRegion) {
+            d3.selectAll(".legend-item")
+                .classed("active", function() {
+                    return d3.select(this).attr("data-region") === activeRegion;
+                });
+        }
+
+        function filterByRegion(regionName) {
+            currentFilter = regionName;
+            updateChart();
+        }
+
+        function generateChartData() {
+            if (currentFilter) {
+                // Show only selected region with equal distribution
+                const countries = allAfricanData[currentFilter]
+                    .sort((a, b) => b.gdp - a.gdp)
+                    .slice(0, 10)
+                    .map(country => ({...country, region: currentFilter, gdp: 100})); // Equal sizes
+
+                return {
+                    name: "African Continent Economic Overview",
+                    children: [{
+                        name: currentFilter,
+                        region: currentFilter,
+                        children: countries
+                    }]
+                };
+            } else {
+                // Show overview with all regions
+                return {
+                    name: "African Continent Economic Overview",
+                    children: Object.keys(allAfricanData).map(region => ({
+                        name: region,
+                        region: region,
+                        children: allAfricanData[region]
+                            .sort((a, b) => b.gdp - a.gdp)
+                            .slice(0, 10)
+                            .map(country => ({...country, region: region}))
+                    }))
+                };
+            }
+        }
+
+        function calculateRegionSummary(regionName) {
+            const countries = allAfricanData[regionName];
+            const totalGDP = countries.reduce((sum, c) => sum + c.gdp, 0);
+            const totalPopulation = countries.reduce((sum, c) => sum + c.population, 0);
+            const avgGrowth = countries.reduce((sum, c) => sum + c.growth, 0) / countries.length;
+            const avgGDPPerCapita = totalGDP * 1000000000 / (totalPopulation * 1000000);
+
+            return {
+                totalGDP,
+                totalPopulation,
+                avgGrowth,
+                avgGDPPerCapita,
+                countryCount: countries.length
+            };
+        }
+
+        function updateChart() {
+            // Clear existing chart
+            g.selectAll("*").remove();
+
+            const data = generateChartData();
+            
+            // Create hierarchy
+            const hierarchy = d3.hierarchy(data)
+                .sum(d => d.gdp || 0);
+
+            // Create partition layout
+            const partition = d3.partition()
+                .size([2 * Math.PI, radius - 30]);
+
+            const root = partition(hierarchy);
+
+            // Create arcs
+            const arc = d3.arc()
+                .startAngle(d => d.x0)
+                .endAngle(d => d.x1)
+                .innerRadius(d => d.y0)
+                .outerRadius(d => d.y1);
+
+            // Create arcs
+            const arcs = g.selectAll("path")
+                .data(root.descendants().slice(1))
+                .enter()
+                .append("path")
+                .attr("class", "arc")
+                .attr("d", arc)
+                .style("fill", d => {
+                    if (d.depth === 1) {
+                        return regionColorMap[d.data.name];
+                    } else {
+                        // Use lighter shade for countries
+                        return d3.color(regionColorMap[d.parent.data.name]).brighter(0.3);
+                    }
+                })
+                .style("stroke", "#fff")
+                .style("stroke-width", 2)
+                .on("mouseover", function(event, d) {
+                    if (d.depth === 2) {
+                        showCountryTooltip(event, d.data);
+                    } else if (d.depth === 1) {
+                        showRegionTooltip(event, d.data);
+                    }
+                    d3.select(this).style("opacity", 0.8);
+                })
+                .on("mouseout", function(event, d) {
+                    hideTooltip();
+                    d3.select(this).style("opacity", 1);
+                })
+                .on("mousemove", function(event, d) {
+                    moveTooltip(event);
+                });
+
+            // Add labels for regions (first tier)
+            g.selectAll(".region-label")
+                .data(root.descendants().filter(d => d.depth === 1))
+                .enter()
+                .append("text")
+                .attr("class", "region-label")
+                .attr("transform", d => {
+                    const angle = (d.x0 + d.x1) / 2;
+                    const rotate = angle * 180 / Math.PI - 90;
+                    const radius = (d.y0 + d.y1) / 2;
+                    return `rotate(${rotate}) translate(${radius},0) rotate(${rotate > 90 ? 180 : 0})`;
+                })
+                .text(d => d.data.name);
+
+            // Animation
+            arcs.style("opacity", 0)
+                .transition()
+                .duration(800)
+                .delay((d, i) => i * 30)
+                .style("opacity", 1);
+        }
+
+        function showCountryTooltip(event, data) {
+            const tooltipContent = `
+                <div class="tooltip-header">
+                    <div class="tooltip-flag">${data.flag}</div>
+                    <div>
+                        <div class="tooltip-country">${data.name}</div>
+                        <div class="tooltip-region">${data.region}</div>
+                    </div>
+                </div>
+                <div class="tooltip-data">
+                    <div class="data-row">
+                        <span class="data-label">GDP:</span>
+                        <span class="data-value">$${data.gdp.toFixed(1)}B</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Population:</span>
+                        <span class="data-value">${data.population.toFixed(1)}M</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">GDP per Capita:</span>
+                        <span class="data-value">$${data.gdpPerCapita.toLocaleString()}</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Growth Rate:</span>
+                        <span class="data-value" style="color: ${data.growth >= 0 ? '#27ae60' : '#e74c3c'}">${data.growth > 0 ? '+' : ''}${data.growth.toFixed(1)}%</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Currency:</span>
+                        <span class="data-value">${data.currency}</span>
+                    </div>
+                </div>
+            `;
+            
+            tooltip.html(tooltipContent).classed("show", true);
+            moveTooltip(event);
+        }
+
+        function showRegionTooltip(event, data) {
+            const summary = calculateRegionSummary(data.name);
+            
+            const tooltipContent = `
+                <div class="tooltip-header">
+                    <div class="tooltip-flag">🌍</div>
+                    <div>
+                        <div class="tooltip-country">${data.name}</div>
+                        <div class="tooltip-region">Regional Summary</div>
+                    </div>
+                </div>
+                <div class="tooltip-data">
+                    <div class="data-row">
+                        <span class="data-label">Total GDP:</span>
+                        <span class="data-value">$${summary.totalGDP.toFixed(1)}B</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Total Population:</span>
+                        <span class="data-value">${summary.totalPopulation.toFixed(1)}M</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Avg GDP per Capita:</span>
+                        <span class="data-value">$${summary.avgGDPPerCapita.toFixed(0)}</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Avg Growth Rate:</span>
+                        <span class="data-value" style="color: ${summary.avgGrowth >= 0 ? '#27ae60' : '#e74c3c'}">${summary.avgGrowth > 0 ? '+' : ''}${summary.avgGrowth.toFixed(1)}%</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Countries:</span>
+                        <span class="data-value">${summary.countryCount}</span>
+                    </div>
+                </div>
+            `;
+            
+            tooltip.html(tooltipContent).classed("show", true);
+            moveTooltip(event);
+        }
+
+        function hideTooltip() {
+            tooltip.classed("show", false);
+        }
+
+        function moveTooltip(event) {
+            const tooltipRect = tooltip.node().getBoundingClientRect();
+            
+            let left = event.pageX + 15;
+            let top = event.pageY - 15;
+            
+            // Adjust if tooltip goes off screen
+            if (left + tooltipRect.width > window.innerWidth - 20) {
+                left = event.pageX - tooltipRect.width - 15;
+            }
+            
+            if (top + tooltipRect.height > window.innerHeight - 20) {
+                top = event.pageY - tooltipRect.height - 15;
+            }
+            
+            tooltip.style("left", left + "px")
+                   .style("top", top + "px");
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading and show chart
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("main-content").style.display = "flex";
+            
+            initChart();
+        });
+    </script>

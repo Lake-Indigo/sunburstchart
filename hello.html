@@ -10,17 +10,23 @@
     
     <style>
         /* Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        
         
         body {
             font-family: 'Inter', sans-serif;
             background: white;
             color: #333;
+            margin: 0;
+            padding: 40px;
             line-height: 1.6;
+        }
+
+    
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
         }
         
         /* Header */
@@ -481,14 +487,25 @@
 <body>
 
 
-    <!-- Header -->
+    <div class="container">
+        <a href="index.html" class="back-link">Back to homepage</a>
+        
+        <div class="header">
+            <h1>Africa Continent Economic Overview</h1>
+            <p>How leading international institutions like the International Monetary Fund, World Bank, and United Nations assess Africa's economic conditions.</p>
+        </div>
+
+    </div>
+    
+        
+    <!-- Header
     <div class="header" style="background: #f6f6fa; box-shadow: none; padding: 0;">
         <div style="max-width: 1400px; margin: 0 auto; padding: 32px 0 18px 0;">
             <a href="index.html" class="back-link" style="margin-bottom: 18px; display: inline-block;">Back to homepage</a>
             <h1 style="font-size: 2.1rem; font-weight: 700; color: #222; margin: 18px 0 0 0;">Say Hello!</h1>
             <p style="color: #222; font-size: 1.15rem; margin: 10px 0 0 0;">Discover how to say “hello” in different languages around the world!</p>
         </div>
-    </div>
+    </div> -->
 
     <!-- Main Container -->
     <div class="main-container">
@@ -512,10 +529,7 @@
         
         <!-- Content Area -->
         <div class="content-area">
-            <div class="content-header">
-                <h2 class="content-title">Global Greetings Collection</h2>
-                <p class="content-subtitle">Discover how to say "Hello" in different languages around the world</p>
-            </div>
+        
             
             <!-- Flags Grid -->
             <div class="flags-grid" id="flagsGrid">

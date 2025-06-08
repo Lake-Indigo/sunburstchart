@@ -1,0 +1,58 @@
+/* style.css - Minimal styling for card and sunburst layout */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 2rem 3rem;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    min-width: 260px;
+    font-size: 1.3rem;
+    color: #222;
+    text-decoration: none;
+}
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+    background: #f0f4ff;
+}
+
+.back-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1976d2;
+    font-size: 1.1rem;
+    margin: 2rem 0 1.5rem 2rem;
+    font-weight: 500;
+}
+.back-link:hover {
+    text-decoration: underline;
+}
+.sunburst-placeholder {
+    margin: 2rem auto;
+    max-width: 600px;
+    min-height: 320px;
+    background: #e3eafc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7a8f;
+    font-size: 1.2rem;
+    border: 1px dashed #b3c6e0;
+}

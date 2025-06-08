@@ -3,105 +3,811 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World Flags</title>
-    <link rel="stylesheet" href="style.css">
+    <title>World Flags & Greetings</title>
+    
+    <!-- Google Noto Emoji Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body {
-            background: #f6f6fa;
-            font-family: 'Segoe UI', Arial, sans-serif;
+        /* Base Styles */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        .hello-container {
-            max-width: 1100px;
-            margin: 48px auto;
-            background: #fff;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-            padding: 32px 24px 40px 24px;
-        }
-        h1 {
-            font-size: 2.2rem;
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: white;
             color: #333;
-            margin-bottom: 32px;
-            font-weight: 600;
-            letter-spacing: 1px;
+            line-height: 1.6;
         }
-        .flag-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 28px 18px;
+        
+        /* Header */
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .flag-cell {
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .back-home-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 14px;
-            font-size: 1.1rem;
-            background: #f6f6fa;
-            border-radius: 8px;
-            padding: 12px 10px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+            gap: 8px;
         }
+        
+        .back-home-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            min-height: calc(100vh - 100px);
+        }
+        
+        /* Sidebar Legend */
+        .sidebar-legend {
+            width: 280px;
+            flex-shrink: 0;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .legend-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .legend-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .legend-btn {
+            padding: 12px 16px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            background: white;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .legend-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        
+        .legend-btn.active {
+            color: white;
+            font-weight: 600;
+            border-width: 2px;
+            border-style: solid;
+        }
+        
+        /* Continent Colors */
+        .legend-btn[data-continent="africa"] { 
+            border-left: 4px solid #e74c3c; 
+        }
+        .legend-btn[data-continent="africa"].active { 
+            background: #e74c3c; 
+            border-color: #c0392b;
+        }
+        
+        .legend-btn[data-continent="asia"] { 
+            border-left: 4px solid #f39c12; 
+        }
+        .legend-btn[data-continent="asia"].active { 
+            background: #f39c12; 
+            border-color: #d68910;
+        }
+        
+        .legend-btn[data-continent="europe"] { 
+            border-left: 4px solid #3498db; 
+        }
+        .legend-btn[data-continent="europe"].active { 
+            background: #3498db; 
+            border-color: #2980b9;
+        }
+        
+        .legend-btn[data-continent="americas"] { 
+            border-left: 4px solid #27ae60; 
+        }
+        .legend-btn[data-continent="americas"].active { 
+            background: #27ae60; 
+            border-color: #229954;
+        }
+        
+        .legend-btn[data-continent="oceania"] { 
+            border-left: 4px solid #9b59b6; 
+        }
+        .legend-btn[data-continent="oceania"].active { 
+            background: #9b59b6; 
+            border-color: #8e44ad;
+        }
+        
+        .legend-btn[data-continent="reset"] {
+            background: #34495e;
+            color: white;
+            border-left: none;
+            margin-top: 10px;
+        }
+        .legend-btn[data-continent="reset"]:hover {
+            background: #2c3e50;
+        }
+        
+        /* Stats Display */
+        .stats {
+            background: #e8f4f8;
+            padding: 10px 16px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .content-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .content-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .content-subtitle {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+        
+        /* Flags Grid */
+        .flags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 10px 0;
+        }
+        
+        /* Flag Card */
+        .flag-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 16px 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .flag-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: #adb5bd;
+        }
+        
         .flag-emoji {
-            font-family: 'Noto Color Emoji', 'EmojiOne Color', 'Segoe UI Emoji', 'Apple Color Emoji', 'Twemoji Mozilla', 'Android Emoji', sans-serif;
-            font-size: 2.1rem;
+            font-family: 'Noto Color Emoji', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            display: block;
             line-height: 1;
         }
-        .lang-label {
-            color: #1976d2;
-            font-weight: 600;
-            font-size: 1.1rem;
+        
+        .greeting {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 4px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 100%;
         }
-        .hello-word {
-            color: #444;
-            font-size: 1.1rem;
-            margin-left: 6px;
+        
+        .country-name {
+            font-size: 0.75rem;
+            color: #6c757d;
+            font-weight: 400;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border: 5px solid transparent;
+            border-top-color: #2c3e50;
+        }
+        
+        .flag-card:hover .tooltip {
+            opacity: 1;
+        }
+        
+        /* Hidden class for filtering */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar-legend {
+                width: 250px;
+            }
+            
+            .flags-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+            
+            .flag-card {
+                height: 140px;
+                padding: 12px 8px;
+            }
+            
+            .flag-emoji {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .sidebar-legend {
+                width: 100%;
+                position: static;
+            }
+            
+            .legend-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .legend-btn {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+            }
+            
+            .flags-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 10px;
+            }
+            
+            .flag-card {
+                height: 130px;
+                padding: 10px 6px;
+            }
+            
+            .flag-emoji {
+                font-size: 1.8rem;
+            }
+            
+            .greeting {
+                font-size: 0.8rem;
+            }
+            
+            .country-name {
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .main-container {
+                padding: 15px;
+            }
+            
+            .flags-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 8px;
+            }
+            
+            .flag-card {
+                height: 110px;
+                padding: 8px 4px;
+            }
+            
+            .flag-emoji {
+                font-size: 1.5rem;
+            }
+            
+            .greeting {
+                font-size: 0.75rem;
+            }
+            
+            .country-name {
+                font-size: 0.65rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .flags-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 6px;
+            }
+            
+            .flag-card {
+                height: 100px;
+                padding: 6px 3px;
+            }
+            
+            .flag-emoji {
+                font-size: 1.3rem;
+            }
+            
+            .greeting {
+                font-size: 0.7rem;
+            }
+            
+            .country-name {
+                font-size: 0.6rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="hello-container">
-        <h1>🌍 Hello World in African Languages</h1>
-        <div class="flag-grid">
-            <div class="flag-cell"><span class="flag-emoji">🇳🇬</span><span class="lang-label">Nigeria</span><span class="hello-word">Sannu</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇪🇬</span><span class="lang-label">Egypt</span><span class="hello-word">مرحبا (Marhaban)</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇿🇦</span><span class="lang-label">South Africa</span><span class="hello-word">Hallo</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇰🇪</span><span class="lang-label">Kenya</span><span class="hello-word">Jambo</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇬🇭</span><span class="lang-label">Ghana</span><span class="hello-word">Agoo</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇪🇹</span><span class="lang-label">Ethiopia</span><span class="hello-word">Selam</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇲🇦</span><span class="lang-label">Morocco</span><span class="hello-word">Salam</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇨🇮</span><span class="lang-label">Côte d'Ivoire</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇹🇿</span><span class="lang-label">Tanzania</span><span class="hello-word">Hujambo</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇺🇬</span><span class="lang-label">Uganda</span><span class="hello-word">Gyebale Ko</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇩🇿</span><span class="lang-label">Algeria</span><span class="hello-word">Salam</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇸🇩</span><span class="lang-label">Sudan</span><span class="hello-word">Marhaban</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇦🇴</span><span class="lang-label">Angola</span><span class="hello-word">Olá</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇲🇿</span><span class="lang-label">Mozambique</span><span class="hello-word">Olá</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇨🇲</span><span class="lang-label">Cameroon</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇸🇳</span><span class="lang-label">Senegal</span><span class="hello-word">Nanga def</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇲🇱</span><span class="lang-label">Mali</span><span class="hello-word">I ni ce</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇧🇫</span><span class="lang-label">Burkina Faso</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇳🇪</span><span class="lang-label">Niger</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇬🇳</span><span class="lang-label">Guinea</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇧🇯</span><span class="lang-label">Benin</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇷🇼</span><span class="lang-label">Rwanda</span><span class="hello-word">Muraho</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇹🇳</span><span class="lang-label">Tunisia</span><span class="hello-word">Marhaban</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇿🇲</span><span class="lang-label">Zambia</span><span class="hello-word">Shani</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇸🇱</span><span class="lang-label">Sierra Leone</span><span class="hello-word">Kusheh</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇱🇷</span><span class="lang-label">Liberia</span><span class="hello-word">Hello</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇨🇩</span><span class="lang-label">DR Congo</span><span class="hello-word">Mbote</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇬🇦</span><span class="lang-label">Gabon</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇬🇲</span><span class="lang-label">Gambia</span><span class="hello-word">Hello</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇲🇷</span><span class="lang-label">Mauritania</span><span class="hello-word">Marhaban</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇸🇿</span><span class="lang-label">Eswatini</span><span class="hello-word">Sawubona</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇱🇸</span><span class="lang-label">Lesotho</span><span class="hello-word">Lumela</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇲🇬</span><span class="lang-label">Madagascar</span><span class="hello-word">Miarahaba</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇲🇺</span><span class="lang-label">Mauritius</span><span class="hello-word">Bonjour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇸🇨</span><span class="lang-label">Seychelles</span><span class="hello-word">Bonzour</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇨🇻</span><span class="lang-label">Cape Verde</span><span class="hello-word">Olá</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇰🇲</span><span class="lang-label">Comoros</span><span class="hello-word">Bariza djioni</span></div>
-            <div class="flag-cell"><span class="flag-emoji">🇸🇹</span><span class="lang-label">São Tomé & Príncipe</span><span class="hello-word">Alô</span></div>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>🌍 World Flags & Greetings</h1>
+            <a href="#" class="back-home-btn">
+                ← Back to Home
+            </a>
         </div>
     </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar Legend -->
+        <div class="sidebar-legend">
+            <h3 class="legend-title">Filter by Continent</h3>
+            <div class="legend-buttons">
+                <button class="legend-btn" data-continent="africa">🌍 Africa</button>
+                <button class="legend-btn" data-continent="asia">🌏 Asia</button>
+                <button class="legend-btn" data-continent="europe">🌍 Europe</button>
+                <button class="legend-btn" data-continent="americas">🌎 Americas</button>
+                <button class="legend-btn" data-continent="oceania">🌏 Oceania</button>
+                <button class="legend-btn" data-continent="reset">🔄 Reset View</button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats">
+                <span id="stats-text">Showing all 195 countries</span>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="content-header">
+                <h2 class="content-title">Global Greetings Collection</h2>
+                <p class="content-subtitle">Discover how to say "Hello" in different languages around the world</p>
+            </div>
+            
+            <!-- Flags Grid -->
+            <div class="flags-grid" id="flagsGrid">
+                <!-- Flags will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to convert ISO country code to Unicode flag
+        function getFlag(countryCode) {
+            // Regional indicator symbols start at U+1F1E6 (for A)
+            // Each letter A-Z maps to U+1F1E6 to U+1F1FF
+            var REGIONAL_INDICATOR_A = 0x1F1E6;
+            var codePoints = countryCode.toUpperCase().split('').map(function(char) {
+                return REGIONAL_INDICATOR_A + (char.charCodeAt(0) - 'A'.charCodeAt(0));
+            });
+            return String.fromCodePoint.apply(String, codePoints);
+        }
+
+        // Country data with ISO codes, greetings, and continent information
+        var countries = [
+            // Africa
+            { name: "Algeria", code: "DZ", greeting: "Ahlan wa sahlan", continent: "africa" },
+            { name: "Angola", code: "AO", greeting: "Olá", continent: "africa" },
+            { name: "Benin", code: "BJ", greeting: "Bonjour", continent: "africa" },
+            { name: "Botswana", code: "BW", greeting: "Dumela", continent: "africa" },
+            { name: "Burkina Faso", code: "BF", greeting: "Bonjour", continent: "africa" },
+            { name: "Burundi", code: "BI", greeting: "Amahoro", continent: "africa" },
+            { name: "Cameroon", code: "CM", greeting: "Bonjour", continent: "africa" },
+            { name: "Cape Verde", code: "CV", greeting: "Olá", continent: "africa" },
+            { name: "Central African Republic", code: "CF", greeting: "Bonjour", continent: "africa" },
+            { name: "Chad", code: "TD", greeting: "As-salamu alaykum", continent: "africa" },
+            { name: "Comoros", code: "KM", greeting: "Baraka", continent: "africa" },
+            { name: "Congo", code: "CG", greeting: "Bonjour", continent: "africa" },
+            { name: "Democratic Republic of Congo", code: "CD", greeting: "Bonjour", continent: "africa" },
+            { name: "Djibouti", code: "DJ", greeting: "As-salamu alaykum", continent: "africa" },
+            { name: "Egypt", code: "EG", greeting: "Ahlan wa sahlan", continent: "africa" },
+            { name: "Equatorial Guinea", code: "GQ", greeting: "Hola", continent: "africa" },
+            { name: "Eritrea", code: "ER", greeting: "Selam", continent: "africa" },
+            { name: "Eswatini", code: "SZ", greeting: "Sawubona", continent: "africa" },
+            { name: "Ethiopia", code: "ET", greeting: "Selam", continent: "africa" },
+            { name: "Gabon", code: "GA", greeting: "Bonjour", continent: "africa" },
+            { name: "Gambia", code: "GM", greeting: "Hello", continent: "africa" },
+            { name: "Ghana", code: "GH", greeting: "Akwaaba", continent: "africa" },
+            { name: "Guinea", code: "GN", greeting: "Bonjour", continent: "africa" },
+            { name: "Guinea-Bissau", code: "GW", greeting: "Olá", continent: "africa" },
+            { name: "Ivory Coast", code: "CI", greeting: "Bonjour", continent: "africa" },
+            { name: "Kenya", code: "KE", greeting: "Jambo", continent: "africa" },
+            { name: "Lesotho", code: "LS", greeting: "Lumela", continent: "africa" },
+            { name: "Liberia", code: "LR", greeting: "Hello", continent: "africa" },
+            { name: "Libya", code: "LY", greeting: "Ahlan wa sahlan", continent: "africa" },
+            { name: "Madagascar", code: "MG", greeting: "Manao ahoana", continent: "africa" },
+            { name: "Malawi", code: "MW", greeting: "Moni", continent: "africa" },
+            { name: "Mali", code: "ML", greeting: "Bonjour", continent: "africa" },
+            { name: "Mauritania", code: "MR", greeting: "As-salamu alaykum", continent: "africa" },
+            { name: "Mauritius", code: "MU", greeting: "Bonjour", continent: "africa" },
+            { name: "Morocco", code: "MA", greeting: "Ahlan wa sahlan", continent: "africa" },
+            { name: "Mozambique", code: "MZ", greeting: "Olá", continent: "africa" },
+            { name: "Namibia", code: "NA", greeting: "Hello", continent: "africa" },
+            { name: "Niger", code: "NE", greeting: "Bonjour", continent: "africa" },
+            { name: "Nigeria", code: "NG", greeting: "Sannu", continent: "africa" },
+            { name: "Rwanda", code: "RW", greeting: "Muraho", continent: "africa" },
+            { name: "São Tomé and Príncipe", code: "ST", greeting: "Olá", continent: "africa" },
+            { name: "Senegal", code: "SN", greeting: "Bonjour", continent: "africa" },
+            { name: "Seychelles", code: "SC", greeting: "Bonjour", continent: "africa" },
+            { name: "Sierra Leone", code: "SL", greeting: "Hello", continent: "africa" },
+            { name: "Somalia", code: "SO", greeting: "As-salamu alaykum", continent: "africa" },
+            { name: "South Africa", code: "ZA", greeting: "Sawubona", continent: "africa" },
+            { name: "South Sudan", code: "SS", greeting: "Hello", continent: "africa" },
+            { name: "Sudan", code: "SD", greeting: "As-salamu alaykum", continent: "africa" },
+            { name: "Tanzania", code: "TZ", greeting: "Hujambo", continent: "africa" },
+            { name: "Togo", code: "TG", greeting: "Bonjour", continent: "africa" },
+            { name: "Tunisia", code: "TN", greeting: "Ahlan wa sahlan", continent: "africa" },
+            { name: "Uganda", code: "UG", greeting: "Oli otya", continent: "africa" },
+            { name: "Zambia", code: "ZM", greeting: "Shani", continent: "africa" },
+            { name: "Zimbabwe", code: "ZW", greeting: "Mhoro", continent: "africa" },
+
+            // Asia
+            { name: "Afghanistan", code: "AF", greeting: "As-salamu alaykum", continent: "asia" },
+            { name: "Armenia", code: "AM", greeting: "Barev", continent: "asia" },
+            { name: "Azerbaijan", code: "AZ", greeting: "Salam", continent: "asia" },
+            { name: "Bahrain", code: "BH", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Bangladesh", code: "BD", greeting: "Namaste", continent: "asia" },
+            { name: "Bhutan", code: "BT", greeting: "Kuzuzangpo", continent: "asia" },
+            { name: "Brunei", code: "BN", greeting: "Selamat", continent: "asia" },
+            { name: "Cambodia", code: "KH", greeting: "Chum reap suor", continent: "asia" },
+            { name: "China", code: "CN", greeting: "Nǐ hǎo", continent: "asia" },
+            { name: "Cyprus", code: "CY", greeting: "Yia sou", continent: "asia" },
+            { name: "Georgia", code: "GE", greeting: "Gamarjoba", continent: "asia" },
+            { name: "India", code: "IN", greeting: "Namaste", continent: "asia" },
+            { name: "Indonesia", code: "ID", greeting: "Selamat pagi", continent: "asia" },
+            { name: "Iran", code: "IR", greeting: "Salam", continent: "asia" },
+            { name: "Iraq", code: "IQ", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Israel", code: "IL", greeting: "Shalom", continent: "asia" },
+            { name: "Japan", code: "JP", greeting: "Konnichiwa", continent: "asia" },
+            { name: "Jordan", code: "JO", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Kazakhstan", code: "KZ", greeting: "Salam", continent: "asia" },
+            { name: "Kuwait", code: "KW", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Kyrgyzstan", code: "KG", greeting: "Salam", continent: "asia" },
+            { name: "Laos", code: "LA", greeting: "Sabaidee", continent: "asia" },
+            { name: "Lebanon", code: "LB", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Malaysia", code: "MY", greeting: "Selamat pagi", continent: "asia" },
+            { name: "Maldives", code: "MV", greeting: "Assalaamu alaikum", continent: "asia" },
+            { name: "Mongolia", code: "MN", greeting: "Sain baina uu", continent: "asia" },
+            { name: "Myanmar", code: "MM", greeting: "Mingalaba", continent: "asia" },
+            { name: "Nepal", code: "NP", greeting: "Namaste", continent: "asia" },
+            { name: "North Korea", code: "KP", greeting: "Annyeonghaseyo", continent: "asia" },
+            { name: "Oman", code: "OM", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Pakistan", code: "PK", greeting: "As-salamu alaykum", continent: "asia" },
+            { name: "Palestine", code: "PS", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Philippines", code: "PH", greeting: "Kumusta", continent: "asia" },
+            { name: "Qatar", code: "QA", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Saudi Arabia", code: "SA", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Singapore", code: "SG", greeting: "Hello", continent: "asia" },
+            { name: "South Korea", code: "KR", greeting: "Annyeonghaseyo", continent: "asia" },
+            { name: "Sri Lanka", code: "LK", greeting: "Ayubowan", continent: "asia" },
+            { name: "Syria", code: "SY", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Taiwan", code: "TW", greeting: "Nǐ hǎo", continent: "asia" },
+            { name: "Tajikistan", code: "TJ", greeting: "Salom", continent: "asia" },
+            { name: "Thailand", code: "TH", greeting: "Sawasdee", continent: "asia" },
+            { name: "Timor-Leste", code: "TL", greeting: "Ola", continent: "asia" },
+            { name: "Turkey", code: "TR", greeting: "Merhaba", continent: "asia" },
+            { name: "Turkmenistan", code: "TM", greeting: "Salam", continent: "asia" },
+            { name: "United Arab Emirates", code: "AE", greeting: "Ahlan wa sahlan", continent: "asia" },
+            { name: "Uzbekistan", code: "UZ", greeting: "Salom", continent: "asia" },
+            { name: "Vietnam", code: "VN", greeting: "Xin chào", continent: "asia" },
+            { name: "Yemen", code: "YE", greeting: "Ahlan wa sahlan", continent: "asia" },
+
+            // Europe
+            { name: "Albania", code: "AL", greeting: "Përshëndetje", continent: "europe" },
+            { name: "Andorra", code: "AD", greeting: "Hola", continent: "europe" },
+            { name: "Austria", code: "AT", greeting: "Hallo", continent: "europe" },
+            { name: "Belarus", code: "BY", greeting: "Pryvitanne", continent: "europe" },
+            { name: "Belgium", code: "BE", greeting: "Bonjour", continent: "europe" },
+            { name: "Bosnia and Herzegovina", code: "BA", greeting: "Zdravo", continent: "europe" },
+            { name: "Bulgaria", code: "BG", greeting: "Zdraveĭte", continent: "europe" },
+            { name: "Croatia", code: "HR", greeting: "Zdravo", continent: "europe" },
+            { name: "Czech Republic", code: "CZ", greeting: "Ahoj", continent: "europe" },
+            { name: "Denmark", code: "DK", greeting: "Hej", continent: "europe" },
+            { name: "Estonia", code: "EE", greeting: "Tere", continent: "europe" },
+            { name: "Finland", code: "FI", greeting: "Hei", continent: "europe" },
+            { name: "France", code: "FR", greeting: "Bonjour", continent: "europe" },
+            { name: "Germany", code: "DE", greeting: "Hallo", continent: "europe" },
+            { name: "Greece", code: "GR", greeting: "Yia sou", continent: "europe" },
+            { name: "Hungary", code: "HU", greeting: "Szervusz", continent: "europe" },
+            { name: "Iceland", code: "IS", greeting: "Halló", continent: "europe" },
+            { name: "Ireland", code: "IE", greeting: "Dia dhuit", continent: "europe" },
+            { name: "Italy", code: "IT", greeting: "Ciao", continent: "europe" },
+            { name: "Kosovo", code: "XK", greeting: "Përshëndetje", continent: "europe" },
+            { name: "Latvia", code: "LV", greeting: "Sveiks", continent: "europe" },
+            { name: "Liechtenstein", code: "LI", greeting: "Hallo", continent: "europe" },
+            { name: "Lithuania", code: "LT", greeting: "Labas", continent: "europe" },
+            { name: "Luxembourg", code: "LU", greeting: "Moien", continent: "europe" },
+            { name: "Malta", code: "MT", greeting: "Bonġu", continent: "europe" },
+            { name: "Moldova", code: "MD", greeting: "Salut", continent: "europe" },
+            { name: "Monaco", code: "MC", greeting: "Bonjour", continent: "europe" },
+            { name: "Montenegro", code: "ME", greeting: "Zdravo", continent: "europe" },
+            { name: "Netherlands", code: "NL", greeting: "Hallo", continent: "europe" },
+            { name: "North Macedonia", code: "MK", greeting: "Zdravo", continent: "europe" },
+            { name: "Norway", code: "NO", greeting: "Hei", continent: "europe" },
+            { name: "Poland", code: "PL", greeting: "Cześć", continent: "europe" },
+            { name: "Portugal", code: "PT", greeting: "Olá", continent: "europe" },
+            { name: "Romania", code: "RO", greeting: "Salut", continent: "europe" },
+            { name: "Russia", code: "RU", greeting: "Privet", continent: "europe" },
+            { name: "San Marino", code: "SM", greeting: "Ciao", continent: "europe" },
+            { name: "Serbia", code: "RS", greeting: "Zdravo", continent: "europe" },
+            { name: "Slovakia", code: "SK", greeting: "Ahoj", continent: "europe" },
+            { name: "Slovenia", code: "SI", greeting: "Zdravo", continent: "europe" },
+            { name: "Spain", code: "ES", greeting: "Hola", continent: "europe" },
+            { name: "Sweden", code: "SE", greeting: "Hej", continent: "europe" },
+            { name: "Switzerland", code: "CH", greeting: "Hallo", continent: "europe" },
+            { name: "Ukraine", code: "UA", greeting: "Pryvit", continent: "europe" },
+            { name: "United Kingdom", code: "GB", greeting: "Hello", continent: "europe" },
+            { name: "Vatican City", code: "VA", greeting: "Ciao", continent: "europe" },
+
+            // Americas
+            { name: "Antigua and Barbuda", code: "AG", greeting: "Hello", continent: "americas" },
+            { name: "Argentina", code: "AR", greeting: "Hola", continent: "americas" },
+            { name: "Bahamas", code: "BS", greeting: "Hello", continent: "americas" },
+            { name: "Barbados", code: "BB", greeting: "Hello", continent: "americas" },
+            { name: "Belize", code: "BZ", greeting: "Hello", continent: "americas" },
+            { name: "Bolivia", code: "BO", greeting: "Hola", continent: "americas" },
+            { name: "Brazil", code: "BR", greeting: "Olá", continent: "americas" },
+            { name: "Canada", code: "CA", greeting: "Hello", continent: "americas" },
+            { name: "Chile", code: "CL", greeting: "Hola", continent: "americas" },
+            { name: "Colombia", code: "CO", greeting: "Hola", continent: "americas" },
+            { name: "Costa Rica", code: "CR", greeting: "Hola", continent: "americas" },
+            { name: "Cuba", code: "CU", greeting: "Hola", continent: "americas" },
+            { name: "Dominica", code: "DM", greeting: "Hello", continent: "americas" },
+            { name: "Dominican Republic", code: "DO", greeting: "Hola", continent: "americas" },
+            { name: "Ecuador", code: "EC", greeting: "Hola", continent: "americas" },
+            { name: "El Salvador", code: "SV", greeting: "Hola", continent: "americas" },
+            { name: "Grenada", code: "GD", greeting: "Hello", continent: "americas" },
+            { name: "Guatemala", code: "GT", greeting: "Hola", continent: "americas" },
+            { name: "Guyana", code: "GY", greeting: "Hello", continent: "americas" },
+            { name: "Haiti", code: "HT", greeting: "Bonjour", continent: "americas" },
+            { name: "Honduras", code: "HN", greeting: "Hola", continent: "americas" },
+            { name: "Jamaica", code: "JM", greeting: "Hello", continent: "americas" },
+            { name: "Mexico", code: "MX", greeting: "Hola", continent: "americas" },
+            { name: "Nicaragua", code: "NI", greeting: "Hola", continent: "americas" },
+            { name: "Panama", code: "PA", greeting: "Hola", continent: "americas" },
+            { name: "Paraguay", code: "PY", greeting: "Hola", continent: "americas" },
+            { name: "Peru", code: "PE", greeting: "Hola", continent: "americas" },
+            { name: "Saint Kitts and Nevis", code: "KN", greeting: "Hello", continent: "americas" },
+            { name: "Saint Lucia", code: "LC", greeting: "Hello", continent: "americas" },
+            { name: "Saint Vincent and the Grenadines", code: "VC", greeting: "Hello", continent: "americas" },
+            { name: "Suriname", code: "SR", greeting: "Hallo", continent: "americas" },
+            { name: "Trinidad and Tobago", code: "TT", greeting: "Hello", continent: "americas" },
+            { name: "United States", code: "US", greeting: "Hello", continent: "americas" },
+            { name: "Uruguay", code: "UY", greeting: "Hola", continent: "americas" },
+            { name: "Venezuela", code: "VE", greeting: "Hola", continent: "americas" },
+
+            // Oceania
+            { name: "Australia", code: "AU", greeting: "G'day", continent: "oceania" },
+            { name: "Fiji", code: "FJ", greeting: "Bula", continent: "oceania" },
+            { name: "Kiribati", code: "KI", greeting: "Mauri", continent: "oceania" },
+            { name: "Marshall Islands", code: "MH", greeting: "Yokwe", continent: "oceania" },
+            { name: "Micronesia", code: "FM", greeting: "Kaselehlie", continent: "oceania" },
+            { name: "Nauru", code: "NR", greeting: "Ekamowir omo", continent: "oceania" },
+            { name: "New Zealand", code: "NZ", greeting: "Kia ora", continent: "oceania" },
+            { name: "Palau", code: "PW", greeting: "Alii", continent: "oceania" },
+            { name: "Papua New Guinea", code: "PG", greeting: "Hello", continent: "oceania" },
+            { name: "Samoa", code: "WS", greeting: "Talofa", continent: "oceania" },
+            { name: "Solomon Islands", code: "SB", greeting: "Hello", continent: "oceania" },
+            { name: "Tonga", code: "TO", greeting: "Mālō e lelei", continent: "oceania" },
+            { name: "Tuvalu", code: "TV", greeting: "Talofa", continent: "oceania" },
+            { name: "Vanuatu", code: "VU", greeting: "Halo", continent: "oceania" }
+        ];
+
+        // Sort countries alphabetically by name
+        countries.sort(function(a, b) {
+            return a.name.localeCompare(b.name);
+        });
+
+        // DOM elements
+        var flagsGrid = document.getElementById('flagsGrid');
+        var statsText = document.getElementById('stats-text');
+        var filterButtons = document.querySelectorAll('.legend-btn');
+
+        // Current filter state
+        var currentFilter = 'all';
+
+        // Initialize the page
+        function init() {
+            renderFlags();
+            setupEventListeners();
+            updateStats();
+        }
+
+        // Render flag cards
+        function renderFlags() {
+            flagsGrid.innerHTML = '';
+            
+            var filteredCountries = currentFilter === 'all' ? 
+                countries : 
+                countries.filter(function(country) {
+                    return country.continent === currentFilter;
+                });
+
+            filteredCountries.forEach(function(country) {
+                var flagCard = createFlagCard(country);
+                flagsGrid.appendChild(flagCard);
+            });
+        }
+
+        // Create individual flag card
+        function createFlagCard(country) {
+            var card = document.createElement('div');
+            card.className = 'flag-card';
+            card.dataset.continent = country.continent;
+            
+            card.innerHTML = '<div class="tooltip">' + country.name + '</div>' +
+                            '<div class="flag-emoji">' + getFlag(country.code) + '</div>' +
+                            '<div class="greeting">' + country.greeting + '</div>' +
+                            '<div class="country-name">' + country.name + '</div>';
+            
+            return card;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            filterButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var continent = button.dataset.continent;
+                    
+                    // Remove active class from all buttons
+                    filterButtons.forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    
+                    if (continent === 'reset') {
+                        currentFilter = 'all';
+                    } else {
+                        currentFilter = continent;
+                        button.classList.add('active');
+                    }
+                    
+                    renderFlags();
+                    updateStats();
+                });
+            });
+        }
+
+        // Update statistics display
+        function updateStats() {
+            var filteredCountries = currentFilter === 'all' ? 
+                countries : 
+                countries.filter(function(country) {
+                    return country.continent === currentFilter;
+                });
+            
+            var count = filteredCountries.length;
+            var continentName = currentFilter === 'all' ? 'all' : currentFilter;
+            
+            if (currentFilter === 'all') {
+                statsText.textContent = 'Showing all ' + count + ' countries';
+            } else {
+                var capitalizedContinent = continentName.charAt(0).toUpperCase() + continentName.slice(1);
+                statsText.textContent = 'Showing ' + count + ' countries from ' + capitalizedContinent;
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>

@@ -360,6 +360,29 @@
                 text-align: center;
             }
             
+
+            .reset-button {
+                width: 100%;
+                padding: 12px 20px;
+                background: #1976d2;
+                color: white;
+                border: none;
+                border-radius: 25px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                cursor: pointer;
+                margin-top: 25px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+                letter-spacing: 0.03em;
+            }
+
+            .reset-button:hover {
+                background: #1565c0;
+                transform: translateY(-1px);
+            }
+
+            
             .flags-grid {
                 grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
                 gap: 10px;
@@ -449,13 +472,14 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="header-content">
-            <h1>🌍 World Flags & Greetings</h1>
-            <a href="#" class="back-home-btn">
-                ← Back to Home
-            </a>
+                <div class="container">
+
+        <a href="index.html" class="back-link">Back to homepage</a>
+        
+        <div class="header">
+            <h1>World Flags & Greetings</h1>
+            <p>How leading international institutions like the International Monetary Fund, World Bank, and United Nations assess Africa's economic conditions.</p>
         </div>
-    </div>
 
     <!-- Main Container -->
     <div class="main-container">
@@ -463,12 +487,12 @@
         <div class="sidebar-legend">
             <h3 class="legend-title">Filter by Continent</h3>
             <div class="legend-buttons">
-                <button class="legend-btn" data-continent="africa">🌍 Africa</button>
-                <button class="legend-btn" data-continent="asia">🌏 Asia</button>
-                <button class="legend-btn" data-continent="europe">🌍 Europe</button>
-                <button class="legend-btn" data-continent="americas">🌎 Americas</button>
-                <button class="legend-btn" data-continent="oceania">🌏 Oceania</button>
-                <button class="legend-btn" data-continent="reset">🔄 Reset View</button>
+                <button class="legend-btn" data-continent="africa"> Africa</button>
+                <button class="legend-btn" data-continent="asia"> Asia</button>
+                <button class="legend-btn" data-continent="europe"> Europe</button>
+                <button class="legend-btn" data-continent="americas"> Americas</button>
+                <button class="legend-btn" data-continent="oceania"> Oceania</button>
+                <button class="reset-button" data-continent="reset"> Reset View</button>
             </div>
             
             <!-- Stats -->
@@ -721,7 +745,7 @@
         // DOM elements
         var flagsGrid = document.getElementById('flagsGrid');
         var statsText = document.getElementById('stats-text');
-        var filterButtons = document.querySelectorAll('.legend-btn');
+        var filterButtons = document.querySelectorAll('.legend-btn, .reset-button');
 
         // Current filter state
         var currentFilter = 'all';

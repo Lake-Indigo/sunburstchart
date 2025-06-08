@@ -1,0 +1,765 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ==============================================
+   BASE STYLES
+   ============================================== */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: white;
+    color: #333;
+    margin: 0;
+    padding: 40px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ==============================================
+   NAVIGATION & HEADER STYLES
+   ============================================== */
+
+.back-link {
+    color: #1976d2;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 24px 0 24px 0;
+    display: inline-block;
+    font-weight: 500;
+    background: none;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+    color: #1565c0;
+}
+
+.back-link::before {
+    content: "\25C0 "; /* Unicode for left-pointing triangle */
+    color: #1976d2;
+    font-size: 1.1em;
+    margin-right: 5px;
+}
+
+.header {
+    background: white;
+    color: #222;
+    padding: 0;
+    box-shadow: none;
+    margin-bottom: 40px;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: black;
+    line-height: 1.2;
+}
+
+.header p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ==============================================
+   HOMEPAGE SPECIFIC STYLES
+   ============================================== */
+
+.homepage-body {
+    background: #f6f6fa;
+    padding: 0;
+}
+
+.explorations-title {
+    color: #b3b3b3;
+    font-size: 5rem;
+    font-weight: 400;
+    margin-top: 48px;
+    margin-left: 48px;
+    letter-spacing: 2px;
+}
+
+.explorations-box {
+    border: 1.5px solid #999;
+    background: transparent;
+    margin: 32px 48px 0 48px;
+    padding: 0;
+    min-height: 75vh;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.explorations-card {
+    border: 1.2px solid #444;
+    background: #f6f6fa;
+    width: 370px;
+    height: 120px;
+    margin: 40px 0 0 48px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.explorations-card:nth-child(2) {
+    margin-left: 32px;
+}
+
+.explorations-link {
+    color: #2196f3;
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1.2;
+    margin-left: 24px;
+    transition: color 0.2s;
+}
+
+.explorations-link:hover {
+    color: #1565c0;
+    text-decoration: underline;
+}
+
+/* ==============================================
+   HELLO PAGE LAYOUT
+   ============================================== */
+
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    min-height: calc(100vh - 100px);
+}
+
+.content-area {
+    flex: 1;
+    min-width: 0;
+}
+
+.content-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.content-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.content-subtitle {
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+/* ==============================================
+   SIDEBAR & LEGEND
+   ============================================== */
+
+.sidebar-legend {
+    width: 280px;
+    flex-shrink: 0;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.legend-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.legend-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.legend-btn {
+    padding: 12px 16px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background: white;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-align: left;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.legend-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.legend-btn.active {
+    color: white;
+    font-weight: 600;
+    border-width: 2px;
+    border-style: solid;
+}
+
+/* Continent Colors */
+.legend-btn[data-continent="africa"] { 
+    border-left: 4px solid #e74c3c; 
+}
+.legend-btn[data-continent="africa"].active { 
+    background: #e74c3c; 
+    border-color: #c0392b;
+}
+
+.legend-btn[data-continent="asia"] { 
+    border-left: 4px solid #f39c12; 
+}
+.legend-btn[data-continent="asia"].active { 
+    background: #f39c12; 
+    border-color: #d68910;
+}
+
+.legend-btn[data-continent="europe"] { 
+    border-left: 4px solid #3498db; 
+}
+.legend-btn[data-continent="europe"].active { 
+    background: #3498db; 
+    border-color: #2980b9;
+}
+
+.legend-btn[data-continent="americas"] { 
+    border-left: 4px solid #27ae60; 
+}
+.legend-btn[data-continent="americas"].active { 
+    background: #27ae60; 
+    border-color: #229954;
+}
+
+.legend-btn[data-continent="oceania"] { 
+    border-left: 4px solid #9b59b6; 
+}
+.legend-btn[data-continent="oceania"].active { 
+    background: #9b59b6; 
+    border-color: #8e44ad;
+}
+
+.legend-btn[data-continent="reset"] {
+    background: #34495e;
+    color: white;
+    border-left: none;
+    margin-top: 10px;
+}
+.legend-btn[data-continent="reset"]:hover {
+    background: #2c3e50;
+}
+
+.reset-button {
+    width: 100%;
+    padding: 12px 20px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    letter-spacing: 0.03em;
+}
+
+.reset-button:hover {
+    background: #1565c0;
+    transform: translateY(-1px);
+}
+
+.stats {
+    background: #e8f4f8;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* ==============================================
+   FLAGS GRID
+   ============================================== */
+
+.flags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.flag-card {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.flag-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-color: #adb5bd;
+}
+
+.flag-emoji {
+    font-family: 'Noto Color Emoji', sans-serif;
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    display: block;
+    line-height: 1;
+}
+
+.greeting {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.country-name {
+    font-size: 0.75rem;
+    color: #6c757d;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+/* ==============================================
+   SUNBURST CHART STYLES
+   ============================================== */
+
+.main-content {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 30px;
+    background: white;
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.chart-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.sunburst-chart {
+    position: relative;
+}
+
+.center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.center-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.3;
+    max-width: 120px;
+}
+
+.legend-container {
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    background: #fafafa;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.legend-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.legend-item.active {
+    background: rgba(25, 118, 210, 0.1);
+    border-left: 4px solid #1976d2;
+    padding-left: 10px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 15px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.legend-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.loading {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin: 40px 0;
+}
+
+.arc {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.arc:hover {
+    filter: brightness(1.1);
+    stroke-width: 3px;
+}
+
+.region-label {
+    font-size: 11px;
+    font-weight: 600;
+    fill: #333;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+.country-label {
+    font-size: 9px;
+    font-weight: 500;
+    fill: #555;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+/* ==============================================
+   TOOLTIP STYLES
+   ============================================== */
+
+.tooltip {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border: 5px solid transparent;
+    border-top-color: #2c3e50;
+}
+
+.flag-card:hover .tooltip {
+    opacity: 1;
+}
+
+/* Sunburst tooltip styles */
+.tooltip.sunburst-tooltip {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    max-width: 280px;
+    color: #333;
+    top: auto;
+    left: auto;
+    transform: none;
+}
+
+.tooltip.sunburst-tooltip.show {
+    opacity: 1;
+}
+
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.tooltip-flag {
+    font-size: 1.8rem;
+    margin-right: 10px;
+}
+
+.tooltip-country {
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+}
+
+.tooltip-region {
+    color: #666;
+    font-size: 0.85rem;
+    margin-top: 2px;
+}
+
+.tooltip-data {
+    display: grid;
+    gap: 6px;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 0;
+}
+
+.data-label {
+    color: #666;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.data-value {
+    color: #333;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* ==============================================
+   UTILITY CLASSES
+   ============================================== */
+
+.hidden {
+    display: none !important;
+}
+
+/* ==============================================
+   RESPONSIVE DESIGN
+   ============================================== */
+
+@media (max-width: 1200px) {
+    .sidebar-legend {
+        width: 250px;
+    }
+    
+    .flags-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+    }
+    
+    .flag-card {
+        height: 140px;
+        padding: 12px 8px;
+    }
+    
+    .flag-emoji {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .sidebar-legend {
+        width: 100%;
+        position: static;
+    }
+    
+    .legend-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .legend-btn {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    .flags-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px;
+    }
+    
+    .flag-card {
+        height: 130px;
+        padding: 10px 6px;
+    }
+    
+    .flag-emoji {
+        font-size: 1.8rem;
+    }
+    
+    .greeting {
+        font-size: 0.8rem;
+    }
+    
+    .country-name {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .explorations-title {
+        font-size: 2.5rem;
+        margin-left: 16px;
+    }
+    
+    .explorations-box {
+        margin: 24px 8px 0 8px;
+    }
+    
+    .explorations-card {
+        width: 90%;
+        margin-left: 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .main-container {
+        padding: 15px;
+    }
+    
+    .flags-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 8px;
+    }
+    
+    .flag-card {
+        height: 110px;
+        padding: 8px 4px;
+    }
+    
+    .flag-emoji {
+        font-size: 1.5rem;
+    }
+    
+    .greeting {
+        font-size: 0.75rem;
+    }
+    
+    .country-name {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .flags-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 6px;
+    }
+    
+    .flag-card {
+        height: 100px;
+        padding: 6px 3px;
+    }
+    
+    .flag-emoji {
+        font-size: 1.3rem;
+    }
+    
+    .greeting {
+        font-size: 0.7rem;
+    }
+    
+    .country-name {
+        font-size: 0.6rem;
+    }
+}

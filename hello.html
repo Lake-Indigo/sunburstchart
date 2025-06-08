@@ -24,46 +24,51 @@
         }
         
         /* Header */
+
         .header {
-            background: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: white;
+            color: #222;
+            padding: 0;
+            box-shadow: none;
         }
-        
+
         .header-content {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
         }
-        
+
         .header h1 {
             font-size: 2rem;
             font-weight: 700;
             margin: 0;
         }
-        
-        .back-home-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 10px 20px;
-            border-radius: 6px;
+
+        .back-link {
+            color: #1976d2;
             text-decoration: none;
+            font-size: 14px;
+            margin: 24px 0 24px 0;
+            display: inline-block;
             font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: none;
+            border: none;
+            padding: 0;
+            border-radius: 0;
+            transition: color 0.2s;
         }
-        
-        .back-home-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-1px);
+        .back-link:hover {
+            text-decoration: underline;
+            color: #1565c0;
+        }
+        .back-link::before {
+            content: "\25C0 "; /* Unicode for left-pointing triangle */
+            color: #1976d2;
+            font-size: 1.1em;
+            margin-right: 5px;
         }
         
         /* Main Container */
@@ -470,16 +475,16 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-                <div class="container">
 
-        <a href="index.html" class="back-link">Back to homepage</a>
-        
-        <div class="header">
-            <h1>World Flags & Greetings</h1>
-            <p>How leading international institutions like the International Monetary Fund, World Bank, and United Nations assess Africa's economic conditions.</p>
+
+    <!-- Header -->
+    <div class="header" style="background: #f6f6fa; box-shadow: none; padding: 0;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 32px 0 18px 0;">
+            <a href="index.html" class="back-link" style="margin-bottom: 18px; display: inline-block;">Back to homepage</a>
+            <h1 style="font-size: 2.1rem; font-weight: 700; color: #222; margin: 18px 0 0 0;">Say Hello!</h1>
+            <p style="color: #222; font-size: 1.15rem; margin: 10px 0 0 0;">Discover how to say “hello” in different languages around the world!</p>
         </div>
+    </div>
 
     <!-- Main Container -->
     <div class="main-container">

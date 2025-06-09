@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Report</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">Back to homepage</a>
+        
+        <div class="header">
+            <h1>Weather Report</h1>
+            <p>Real-time weather conditions and forecasts for cities around the world</p>
+        </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar Controls -->
+        <div class="sidebar-legend">
+            <h3 class="legend-title">Search Location</h3>
+            <div class="weather-search">
+                <input type="text" id="cityInput" class="city-input" placeholder="Enter city name...">
+                <button id="searchBtn" class="search-button">Search</button>
+            </div>
+            
+            <!-- Quick Cities -->
+            <div class="quick-cities">
+                <h4 class="quick-cities-title">Quick Access</h4>
+                <div class="quick-city-buttons">
+                    <button class="quick-city-btn" data-city="New York">New York</button>
+                    <button class="quick-city-btn" data-city="London">London</button>
+                    <button class="quick-city-btn" data-city="Tokyo">Tokyo</button>
+                    <button class="quick-city-btn" data-city="Sydney">Sydney</button>
+                    <button class="quick-city-btn" data-city="Paris">Paris</button>
+                    <button class="quick-city-btn" data-city="Dubai">Dubai</button>
+                </div>
+            </div>
+            
+            <!-- Units Toggle -->
+            <div class="units-toggle">
+                <h4 class="units-title">Temperature Unit</h4>
+                <div class="toggle-buttons">
+                    <button id="celsiusBtn" class="unit-btn active">°C</button>
+                    <button id="fahrenheitBtn" class="unit-btn">°F</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Loading State -->
+            <div class="weather-loading" id="weatherLoading">
+                <div class="loading-spinner"></div>
+                <p>Loading weather data...</p>
+            </div>
+            
+            <!-- Error State -->
+            <div class="weather-error" id="weatherError" style="display: none;">
+                <div class="error-icon">⚠️</div>
+                <h3>Weather data unavailable</h3>
+                <p>Unable to fetch weather information. Please try a different city or check your connection.</p>
+            </div>
+            
+            <!-- Weather Content -->
+            <div class="weather-content" id="weatherContent" style="display: none;">
+                <!-- Current Weather Card -->
+                <div class="current-weather-card">
+                    <div class="current-weather-header">
+                        <div class="location-info">
+                            <h2 id="currentCity">New York</h2>
+                            <p id="currentDate">Monday, January 15, 2024</p>
+                        </div>
+                        <div class="weather-icon-large">
+                            <span id="currentIcon">☀️</span>
+                        </div>
+                    </div>
+                    
+                    <div class="current-weather-main">
+                        <div class="temperature-display">
+                            <span id="currentTemp">22°</span>
+                            <span id="currentCondition">Sunny</span>
+                        </div>
+                        
+                        <div class="weather-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Feels like</span>
+                                <span id="feelsLike">25°</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Humidity</span>
+                                <span id="humidity">65%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Wind</span>
+                                <span id="windSpeed">12 km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Pressure</span>
+                                <span id="pressure">1013 hPa</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Visibility</span>
+                                <span id="visibility">10 km</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">UV Index</span>
+                                <span id="uvIndex">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hourly Forecast -->
+                <div class="forecast-section">
+                    <h3 class="forecast-title">24-Hour Forecast</h3>
+                    <div class="hourly-forecast" id="hourlyForecast">
+                        <!-- Hourly items will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- 7-Day Forecast -->
+                <div class="forecast-section">
+                    <h3 class="forecast-title">7-Day Forecast</h3>
+                    <div class="daily-forecast" id="dailyForecast">
+                        <!-- Daily items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Weather data simulation (in a real app, this would come from an API)
+        const weatherData = {
+            "New York": {
+                current: {
+                    city: "New York",
+                    country: "United States",
+                    temp: 22,
+                    condition: "Sunny",
+                    icon: "☀️",
+                    feelsLike: 25,
+                    humidity: 65,
+                    windSpeed: 12,
+                    pressure: 1013,
+                    visibility: 10,
+                    uvIndex: 5
+                },
+                hourly: [
+                    { time: "Now", temp: 22, icon: "☀️" },
+                    { time: "14:00", temp: 24, icon: "☀️" },
+                    { time: "15:00", temp: 26, icon: "⛅" },
+                    { time: "16:00", temp: 25, icon: "⛅" },
+                    { time: "17:00", temp: 23, icon: "🌤️" },
+                    { time: "18:00", temp: 21, icon: "🌤️" },
+                    { time: "19:00", temp: 19, icon: "🌙" },
+                    { time: "20:00", temp: 18, icon: "🌙" }
+                ],
+                daily: [
+                    { day: "Today", high: 26, low: 18, icon: "☀️", condition: "Sunny" },
+                    { day: "Tomorrow", high: 24, low: 16, icon: "⛅", condition: "Partly Cloudy" },
+                    { day: "Wednesday", high: 20, low: 12, icon: "🌧️", condition: "Light Rain" },
+                    { day: "Thursday", high: 23, low: 15, icon: "🌤️", condition: "Partly Sunny" },
+                    { day: "Friday", high: 27, low: 19, icon: "☀️", condition: "Sunny" },
+                    { day: "Saturday", high: 25, low: 17, icon: "⛅", condition: "Cloudy" },
+                    { day: "Sunday", high: 22, low: 14, icon: "🌦️", condition: "Showers" }
+                ]
+            },
+            "London": {
+                current: {
+                    city: "London",
+                    country: "United Kingdom",
+                    temp: 15,
+                    condition: "Cloudy",
+                    icon: "☁️",
+                    feelsLike: 13,
+                    humidity: 78,
+                    windSpeed: 18,
+                    pressure: 1008,
+                    visibility: 8,
+                    uvIndex: 2
+                },
+                hourly: [
+                    { time: "Now", temp: 15, icon: "☁️" },
+                    { time: "14:00", temp: 16, icon: "☁️" },
+                    { time: "15:00", temp: 17, icon: "🌦️" },
+                    { time: "16:00", temp: 16, icon: "🌧️" },
+                    { time: "17:00", temp: 14, icon: "🌧️" },
+                    { time: "18:00", temp: 13, icon: "🌧️" },
+                    { time: "19:00", temp: 12, icon: "🌙" },
+                    { time: "20:00", temp: 11, icon: "🌙" }
+                ],
+                daily: [
+                    { day: "Today", high: 17, low: 11, icon: "☁️", condition: "Cloudy" },
+                    { day: "Tomorrow", high: 14, low: 8, icon: "🌧️", condition: "Rainy" },
+                    { day: "Wednesday", high: 16, low: 10, icon: "🌦️", condition: "Light Showers" },
+                    { day: "Thursday", high: 18, low: 12, icon: "⛅", condition: "Partly Cloudy" },
+                    { day: "Friday", high: 19, low: 13, icon: "🌤️", condition: "Partly Sunny" },
+                    { day: "Saturday", high: 21, low: 15, icon: "☀️", condition: "Sunny" },
+                    { day: "Sunday", high: 20, low: 14, icon: "⛅", condition: "Cloudy" }
+                ]
+            },
+            "Tokyo": {
+                current: {
+                    city: "Tokyo",
+                    country: "Japan",
+                    temp: 28,
+                    condition: "Partly Cloudy",
+                    icon: "⛅",
+                    feelsLike: 31,
+                    humidity: 72,
+                    windSpeed: 8,
+                    pressure: 1016,
+                    visibility: 12,
+                    uvIndex: 7
+                },
+                hourly: [
+                    { time: "Now", temp: 28, icon: "⛅" },
+                    { time: "14:00", temp: 30, icon: "⛅" },
+                    { time: "15:00", temp: 32, icon: "☀️" },
+                    { time: "16:00", temp: 31, icon: "☀️" },
+                    { time: "17:00", temp: 29, icon: "🌤️" },
+                    { time: "18:00", temp: 27, icon: "🌤️" },
+                    { time: "19:00", temp: 25, icon: "🌙" },
+                    { time: "20:00", temp: 24, icon: "🌙" }
+                ],
+                daily: [
+                    { day: "Today", high: 32, low: 24, icon: "⛅", condition: "Partly Cloudy" },
+                    { day: "Tomorrow", high: 34, low: 26, icon: "☀️", condition: "Sunny" },
+                    { day: "Wednesday", high: 31, low: 23, icon: "🌦️", condition: "Thunderstorms" },
+                    { day: "Thursday", high: 29, low: 21, icon: "🌧️", condition: "Heavy Rain" },
+                    { day: "Friday", high: 27, low: 19, icon: "🌦️", condition: "Showers" },
+                    { day: "Saturday", high: 30, low: 22, icon: "⛅", condition: "Partly Cloudy" },
+                    { day: "Sunday", high: 33, low: 25, icon: "☀️", condition: "Sunny" }
+                ]
+            },
+            "Sydney": {
+                current: {
+                    city: "Sydney",
+                    country: "Australia",
+                    temp: 25,
+                    condition: "Sunny",
+                    icon: "☀️",
+                    feelsLike: 27,
+                    humidity: 58,
+                    windSpeed: 15,
+                    pressure: 1020,
+                    visibility: 15,
+                    uvIndex: 8
+                },
+                hourly: [
+                    { time: "Now", temp: 25, icon: "☀️" },
+                    { time: "14:00", temp: 27, icon: "☀️" },
+                    { time: "15:00", temp: 29, icon: "☀️" },
+                    { time: "16:00", temp: 28, icon: "🌤️" },
+                    { time: "17:00", temp: 26, icon: "🌤️" },
+                    { time: "18:00", temp: 24, icon: "⛅" },
+                    { time: "19:00", temp: 22, icon: "🌙" },
+                    { time: "20:00", temp: 21, icon: "🌙" }
+                ],
+                daily: [
+                    { day: "Today", high: 29, low: 21, icon: "☀️", condition: "Sunny" },
+                    { day: "Tomorrow", high: 31, low: 23, icon: "☀️", condition: "Sunny" },
+                    { day: "Wednesday", high: 28, low: 20, icon: "⛅", condition: "Partly Cloudy" },
+                    { day: "Thursday", high: 26, low: 18, icon: "🌦️", condition: "Light Rain" },
+                    { day: "Friday", high: 24, low: 16, icon: "🌧️", condition: "Rainy" },
+                    { day: "Saturday", high: 27, low: 19, icon: "🌤️", condition: "Partly Sunny" },
+                    { day: "Sunday", high: 30, low: 22, icon: "☀️", condition: "Sunny" }
+                ]
+            },
+            "Paris": {
+                current: {
+                    city: "Paris",
+                    country: "France",
+                    temp: 18,
+                    condition: "Partly Sunny",
+                    icon: "🌤️",
+                    feelsLike: 20,
+                    humidity: 68,
+                    windSpeed: 10,
+                    pressure: 1012,
+                    visibility: 9,
+                    uvIndex: 4
+                },
+                hourly: [
+                    { time: "Now", temp: 18, icon: "🌤️" },
+                    { time: "14:00", temp: 20, icon: "🌤️" },
+                    { time: "15:00", temp: 22, icon: "☀️" },
+                    { time: "16:00", temp: 21, icon: "☀️" },
+                    { time: "17:00", temp: 19, icon: "⛅" },
+                    { time: "18:00", temp: 17, icon: "⛅" },
+                    { time: "19:00", temp: 15, icon: "🌙" },
+                    { time: "20:00", temp: 14, icon: "🌙" }
+                ],
+                daily: [
+                    { day: "Today", high: 22, low: 14, icon: "🌤️", condition: "Partly Sunny" },
+                    { day: "Tomorrow", high: 24, low: 16, icon: "☀️", condition: "Sunny" },
+                    { day: "Wednesday", high: 21, low: 13, icon: "⛅", condition: "Cloudy" },
+                    { day: "Thursday", high: 19, low: 11, icon: "🌦️", condition: "Light Rain" },
+                    { day: "Friday", high: 17, low: 9, icon: "🌧️", condition: "Rainy" },
+                    { day: "Saturday", high: 20, low: 12, icon: "🌤️", condition: "Partly Sunny" },
+                    { day: "Sunday", high: 23, low: 15, icon: "☀️", condition: "Sunny" }
+                ]
+            },
+            "Dubai": {
+                current: {
+                    city: "Dubai",
+                    country: "United Arab Emirates",
+                    temp: 35,
+                    condition: "Hot",
+                    icon: "🌞",
+                    feelsLike: 42,
+                    humidity: 45,
+                    windSpeed: 6,
+                    pressure: 1018,
+                    visibility: 20,
+                    uvIndex: 10
+                },
+                hourly: [
+                    { time: "Now", temp: 35, icon: "🌞" },
+                    { time: "14:00", temp: 37, icon: "🌞" },
+                    { time: "15:00", temp: 39, icon: "🌞" },
+                    { time: "16:00", temp: 38, icon: "🌞" },
+                    { time: "17:00", temp: 36, icon: "☀️" },
+                    { time: "18:00", temp: 34, icon: "☀️" },
+                    { time: "19:00", temp: 32, icon: "🌙" },
+                    { time: "20:00", temp: 30, icon: "🌙" }
+                ],
+                daily: [
+                    { day: "Today", high: 39, low: 30, icon: "🌞", condition: "Hot" },
+                    { day: "Tomorrow", high: 41, low: 32, icon: "🌞", condition: "Very Hot" },
+                    { day: "Wednesday", high: 38, low: 29, icon: "☀️", condition: "Sunny" },
+                    { day: "Thursday", high: 36, low: 27, icon: "☀️", condition: "Sunny" },
+                    { day: "Friday", high: 37, low: 28, icon: "☀️", condition: "Sunny" },
+                    { day: "Saturday", high: 40, low: 31, icon: "🌞", condition: "Hot" },
+                    { day: "Sunday", high: 42, low: 33, icon: "🌞", condition: "Very Hot" }
+                ]
+            }
+        };
+
+        // Global variables
+        let currentUnit = 'celsius';
+        let currentCity = 'New York';
+
+        // DOM elements
+        const cityInput = document.getElementById('cityInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const quickCityBtns = document.querySelectorAll('.quick-city-btn');
+        const celsiusBtn = document.getElementById('celsiusBtn');
+        const fahrenheitBtn = document.getElementById('fahrenheitBtn');
+        const weatherLoading = document.getElementById('weatherLoading');
+        const weatherError = document.getElementById('weatherError');
+        const weatherContent = document.getElementById('weatherContent');
+
+        // Initialize the page
+        function init() {
+            setupEventListeners();
+            loadWeatherData(currentCity);
+            updateCurrentDate();
+        }
+
+        function setupEventListeners() {
+            // Search functionality
+            searchBtn.addEventListener('click', handleSearch);
+            cityInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            });
+
+            // Quick city buttons
+            quickCityBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const city = this.dataset.city;
+                    loadWeatherData(city);
+                    updateQuickCityButtons(city);
+                });
+            });
+
+            // Unit toggle
+            celsiusBtn.addEventListener('click', function() {
+                if (currentUnit !== 'celsius') {
+                    currentUnit = 'celsius';
+                    updateUnitButtons();
+                    updateTemperatureDisplay();
+                }
+            });
+
+            fahrenheitBtn.addEventListener('click', function() {
+                if (currentUnit !== 'fahrenheit') {
+                    currentUnit = 'fahrenheit';
+                    updateUnitButtons();
+                    updateTemperatureDisplay();
+                }
+            });
+        }
+
+        function handleSearch() {
+            const city = cityInput.value.trim();
+            if (city) {
+                loadWeatherData(city);
+                cityInput.value = '';
+            }
+        }
+
+        function loadWeatherData(city) {
+            showLoading();
+            
+            // Simulate API delay
+            setTimeout(() => {
+                if (weatherData[city]) {
+                    currentCity = city;
+                    displayWeatherData(weatherData[city]);
+                    updateQuickCityButtons(city);
+                    showWeatherContent();
+                } else {
+                    showError();
+                }
+            }, 1000);
+        }
+
+        function displayWeatherData(data) {
+            const current = data.current;
+            
+            // Update current weather
+            document.getElementById('currentCity').textContent = `${current.city}, ${current.country}`;
+            document.getElementById('currentIcon').textContent = current.icon;
+            document.getElementById('currentCondition').textContent = current.condition;
+            
+            // Update weather details
+            document.getElementById('humidity').textContent = `${current.humidity}%`;
+            document.getElementById('windSpeed').textContent = `${current.windSpeed} km/h`;
+            document.getElementById('pressure').textContent = `${current.pressure} hPa`;
+            document.getElementById('visibility').textContent = `${current.visibility} km`;
+            document.getElementById('uvIndex').textContent = current.uvIndex;
+            
+            // Update hourly forecast
+            updateHourlyForecast(data.hourly);
+            
+            // Update daily forecast
+            updateDailyForecast(data.daily);
+            
+            // Update temperatures with current unit
+            updateTemperatureDisplay();
+        }
+
+        function updateTemperatureDisplay() {
+            const data = weatherData[currentCity];
+            if (!data) return;
+            
+            const current = data.current;
+            
+            // Convert temperatures
+            const temp = convertTemperature(current.temp);
+            const feelsLike = convertTemperature(current.feelsLike);
+            const unit = currentUnit === 'celsius' ? '°C' : '°F';
+            
+            document.getElementById('currentTemp').textContent = `${Math.round(temp)}°`;
+            document.getElementById('feelsLike').textContent = `${Math.round(feelsLike)}${unit}`;
+            
+            // Update hourly forecast temperatures
+            const hourlyItems = document.querySelectorAll('.hourly-item');
+            hourlyItems.forEach((item, index) => {
+                if (data.hourly[index]) {
+                    const hourlyTemp = convertTemperature(data.hourly[index].temp);
+                    item.querySelector('.hourly-temp').textContent = `${Math.round(hourlyTemp)}°`;
+                }
+            });
+            
+            // Update daily forecast temperatures
+            const dailyItems = document.querySelectorAll('.daily-item');
+            dailyItems.forEach((item, index) => {
+                if (data.daily[index]) {
+                    const highTemp = convertTemperature(data.daily[index].high);
+                    const lowTemp = convertTemperature(data.daily[index].low);
+                    item.querySelector('.daily-high').textContent = `${Math.round(highTemp)}°`;
+                    item.querySelector('.daily-low').textContent = `${Math.round(lowTemp)}°`;
+                }
+            });
+        }
+
+        function convertTemperature(celsius) {
+            return currentUnit === 'fahrenheit' ? (celsius * 9/5) + 32 : celsius;
+        }
+
+        function updateHourlyForecast(hourlyData) {
+            const container = document.getElementById('hourlyForecast');
+            container.innerHTML = '';
+            
+            hourlyData.forEach(hour => {
+                const hourItem = document.createElement('div');
+                hourItem.className = 'hourly-item';
+                
+                hourItem.innerHTML = `
+                    <div class="hourly-time">${hour.time}</div>
+                    <div class="hourly-icon">${hour.icon}</div>
+                    <div class="hourly-temp">${Math.round(hour.temp)}°</div>
+                `;
+                
+                container.appendChild(hourItem);
+            });
+        }
+
+        function updateDailyForecast(dailyData) {
+            const container = document.getElementById('dailyForecast');
+            container.innerHTML = '';
+            
+            dailyData.forEach(day => {
+                const dayItem = document.createElement('div');
+                dayItem.className = 'daily-item';
+                
+                dayItem.innerHTML = `
+                    <div class="daily-day">${day.day}</div>
+                    <div class="daily-icon">${day.icon}</div>
+                    <div class="daily-condition">${day.condition}</div>
+                    <div class="daily-temps">
+                        <span class="daily-high">${Math.round(day.high)}°</span>
+                        <span class="daily-low">${Math.round(day.low)}°</span>
+                    </div>
+                `;
+                
+                container.appendChild(dayItem);
+            });
+        }
+
+        function updateQuickCityButtons(activeCity) {
+            quickCityBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.city === activeCity);
+            });
+        }
+
+        function updateUnitButtons() {
+            celsiusBtn.classList.toggle('active', currentUnit === 'celsius');
+            fahrenheitBtn.classList.toggle('active', currentUnit === 'fahrenheit');
+        }
+
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        function showLoading() {
+            weatherLoading.style.display = 'flex';
+            weatherError.style.display = 'none';
+            weatherContent.style.display = 'none';
+        }
+
+        function showError() {
+            weatherLoading.style.display = 'none';
+            weatherError.style.display = 'flex';
+            weatherContent.style.display = 'none';
+        }
+
+        function showWeatherContent() {
+            weatherLoading.style.display = 'none';
+            weatherError.style.display = 'none';
+            weatherContent.style.display = 'block';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
